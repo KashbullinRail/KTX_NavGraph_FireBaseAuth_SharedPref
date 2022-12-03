@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/drawable/ic_baseline_error_24.xml" value="0.214" />
+        <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/drawable/ic_baseline_lock_open_24.xml" value="0.214" />
         <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
+        <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/layout/fragment_congratulations.xml" value="0.27447916666666666" />
+        <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/layout/fragment_login.xml" value="0.27447916666666666" />
+        <entry key="..\:/android/Project/KTX_NavGraph_FireBaseAuth_SharedPref/app/src/main/res/layout/fragment_registration.xml" value="0.27447916666666666" />
       </map>
     </option>
   </component>
