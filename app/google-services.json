@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "456426592258",
+    "project_id": "ktxnavgraphfirebase",
+    "storage_bucket": "ktxnavgraphfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456426592258:android:c04f8a1f50d9aa23ee2f1b",
+        "android_client_info": {
+          "package_name": "com.example.ktx_navgraph_firebaseauth_sharedpref"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456426592258-tprdgid6jlm42rmvughcvfqhmvd8v593.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBV5u9M-RO0fDPu52EilYzZgKQqbZ8nBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456426592258-tprdgid6jlm42rmvughcvfqhmvd8v593.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

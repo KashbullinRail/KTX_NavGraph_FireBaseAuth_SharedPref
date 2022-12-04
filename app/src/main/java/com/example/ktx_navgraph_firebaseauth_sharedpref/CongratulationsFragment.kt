@@ -1,59 +1,94 @@
 package com.example.ktx_navgraph_firebaseauth_sharedpref
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CongratulationsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class CongratulationsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val navView: NavigationView by lazy { requireActivity().findViewById(R.id.navView) }
+    private val drawer: DrawerLayout by lazy { requireActivity().findViewById(R.id.drawer) }
+    private val wvWeb: WebView by lazy { requireActivity().findViewById(R.id.wvWeb) }
+
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        drawer.openDrawer(GravityCompat.START)
+
+        navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.google -> {
+                    webViewStart(GOOGLE_URL)
+                    toastWebView("Google")
+                }
+                R.id.youtube -> {
+                    webViewStart(YouTube_URL)
+                    toastWebView("YouTube")
+                }
+                R.id.stackoverflow -> {
+                    webViewStart(StackOverFlow_URL)
+                    toastWebView("StackOverFlow")
+                }
+                R.id.github -> {
+                    webViewStart(GITHUB_URL)
+                    toastWebView("Github")
+                }
+                R.id.logout -> {
+                    logout()
+                }
+            }
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
+
+    }
+
+    fun toastWebView(text: String) {
+        Toast.makeText(
+            this@CongratulationsFragment as Activity,
+            "Загружается сайт $text",
+            Toast.LENGTH_SHORT
+        )
+            .show()
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    fun webViewStart(url: String) {
+        wvWeb.webViewClient = WebViewClient()
+
+        wvWeb.apply {
+            loadUrl(url)
+            settings.javaScriptEnabled = true
+            settings.loadWithOverviewMode = true
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_congratulations, container, false)
+    fun logout() {
+        auth.signOut()
+        Toast.makeText(
+            this@CongratulationsFragment as Activity,
+            "Logout is success",
+            Toast.LENGTH_LONG
+        )
+            .show()
+        // -> LoginFragment
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CongratulationsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CongratulationsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
