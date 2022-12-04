@@ -1,15 +1,17 @@
 package com.example.ktx_navgraph_firebaseauth_sharedpref
 
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings.Global.putString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.ktx_navgraph_firebaseauth_sharedpref.databinding.FragmentLoginBinding
-
 
 
 class LoginFragment : Fragment() {
@@ -25,7 +27,6 @@ class LoginFragment : Fragment() {
         this._binding = binding
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,24 +44,21 @@ class LoginFragment : Fragment() {
     }
 
     private fun observeAuthentificationState() {
-        viewModel.authenticationState.observe(viewLifecycleOwner, { authenticationState ->
-            when(authenticationState){
+        viewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
+            when (authenticationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    _binding?.btnLogin?.setOnClickListener {
+                    _binding?.btnLogin?.setOnClickListener { View ->
                         findNavController().navigate(R.id.congratulationsFragment)
                     }
-                } else -> {
-                    _binding?.btnLogin?.setOnClickListener {
+                }
+                else -> {
+                    _binding?.btnLogin?.setOnClickListener { View ->
                         findNavController().navigate(R.id.loginFragment)
                     }
                 }
             }
-        })
+        }
     }
-
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

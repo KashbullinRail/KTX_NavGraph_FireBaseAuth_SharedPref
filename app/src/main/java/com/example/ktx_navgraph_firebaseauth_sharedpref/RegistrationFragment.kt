@@ -17,8 +17,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+
 
 
 class RegistrationFragment : Fragment(R.layout.fragment_registration) {
@@ -33,8 +32,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     private var _binding: FragmentRegistrationBinding? = null
 
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,9 +40,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         val binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         this._binding = binding
         return binding.root
-
-
-
     }
 
     private fun launchSignInFlow() {
@@ -74,7 +68,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -86,8 +79,8 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
             navController.popBackStack(R.id.loginFragment, false)
         }
 
-        viewModel.authenticationState.observe(viewLifecycleOwner, { authentificationState ->
-            when(authentificationState){
+        viewModel.authenticationState.observe(viewLifecycleOwner) { authentificationState ->
+            when (authentificationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
                     navController.popBackStack()
                     navController.navigate(R.id.congratulationsFragment)
@@ -98,7 +91,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 ).show()
                 else -> Log.d(TAG, "Authentification state that does not $authentificationState")
             }
-        })
+        }
 
     }
 
