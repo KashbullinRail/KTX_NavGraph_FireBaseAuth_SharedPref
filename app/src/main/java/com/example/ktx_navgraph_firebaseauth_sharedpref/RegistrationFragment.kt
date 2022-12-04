@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -28,14 +30,17 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
         btnRegistration.setOnClickListener { authFireBaseRegistration() }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().popBackStack(R.id.loginFragment, false)
+        }
+
     }
 
     fun authFireBaseRegistration() {
 
         if (etEmailReg.text.toString().isEmpty() || etPasswordReg.text.toString().isEmpty()) {
             toastRegistration("email or password field is empty")
-        }
-        else {
+        } else {
             Log.d("Debug", "click btnRegistration -> else ->")
             auth.createUserWithEmailAndPassword(
                 etEmailReg.text.toString(),
@@ -45,7 +50,11 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 if (task.isSuccessful) {
                     Log.d("Debug", "click btnRegistration -> else -> task -> success")
                     toastRegistration("Registration success")
-                    // -> Congratul
+                    findNavController().navigate(
+                        RegistrationFragmentDirections
+                            .actionRegistrationFragmentToLoginFragment()
+                    )
+                    findNavController().popBackStack()
                 } else {
                     toastRegistration("Registration failed")
                 }

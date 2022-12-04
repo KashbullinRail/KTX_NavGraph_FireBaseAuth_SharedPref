@@ -56,6 +56,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-ui-auth-ktx:21.1.0'
 
 
     testImplementation 'junit:junit:4.13.2'

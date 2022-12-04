@@ -30,5 +30,9 @@
         android:id="@+id/congratulationsFragment"
         android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.CongratulationsFragment"
         android:label="fragment_congratulations"
-        tools:layout="@layout/fragment_congratulations" />
+        tools:layout="@layout/fragment_congratulations" >
+        <action
+            android:id="@+id/action_congratulationsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

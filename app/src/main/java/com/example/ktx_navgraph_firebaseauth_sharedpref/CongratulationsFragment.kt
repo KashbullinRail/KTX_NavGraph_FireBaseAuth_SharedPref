@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -22,9 +24,7 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
     private val navView: NavigationView by lazy { requireActivity().findViewById(R.id.navView) }
     private val drawer: DrawerLayout by lazy { requireActivity().findViewById(R.id.drawer) }
     private val wvWeb: WebView by lazy { requireActivity().findViewById(R.id.wvWeb) }
-
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,6 +57,12 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
             true
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (wvWeb.canGoBack()) wvWeb.goBack() else {
+                findNavController().popBackStack(R.id.loginFragment, false)
+            }
+        }
+
     }
 
     fun toastWebView(text: String) {
@@ -87,7 +93,11 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
             Toast.LENGTH_LONG
         )
             .show()
-        // -> LoginFragment
+        findNavController().navigate(
+            CongratulationsFragmentDirections
+                .actionCongratulationsFragmentToLoginFragment()
+        )
+        findNavController().popBackStack()
     }
 
 
