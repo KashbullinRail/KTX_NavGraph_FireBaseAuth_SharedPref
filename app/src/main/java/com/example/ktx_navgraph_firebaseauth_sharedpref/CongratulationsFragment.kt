@@ -15,7 +15,9 @@ import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -24,32 +26,38 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
     private val navView: NavigationView by lazy { requireActivity().findViewById(R.id.navView) }
     private val drawer: DrawerLayout by lazy { requireActivity().findViewById(R.id.drawer) }
     private val wvWeb: WebView by lazy { requireActivity().findViewById(R.id.wvWeb) }
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         drawer.openDrawer(GravityCompat.START)
 
+        fun snakbar(id: Int) {
+            Snackbar.make(view, requireActivity().getString(id),
+                Snackbar.LENGTH_LONG).show()
+        }
+
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.google -> {
                     webViewStart(GOOGLE_URL)
-                    toastWebView("Google")
+                    snakbar(R.string.google)
                 }
                 R.id.youtube -> {
                     webViewStart(YouTube_URL)
-                    toastWebView("YouTube")
+                    snakbar(R.string.youtube)
                 }
                 R.id.stackoverflow -> {
                     webViewStart(StackOverFlow_URL)
-                    toastWebView("StackOverFlow")
+                    snakbar(R.string.stackoverflow)
                 }
                 R.id.github -> {
                     webViewStart(GITHUB_URL)
-                    toastWebView("Github")
+                    snakbar(R.string.github)
                 }
                 R.id.logout -> {
+                    snakbar(R.string.logout_success)
                     logout()
                 }
             }
@@ -59,19 +67,10 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (wvWeb.canGoBack()) wvWeb.goBack() else {
-                findNavController().popBackStack(R.id.loginFragment, false)
+                findNavController().popBackStack()
             }
         }
 
-    }
-
-    fun toastWebView(text: String) {
-        Toast.makeText(
-            this@CongratulationsFragment as Activity,
-            "Загружается сайт $text",
-            Toast.LENGTH_SHORT
-        )
-            .show()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -86,18 +85,9 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
     }
 
     fun logout() {
-        auth.signOut()
-        Toast.makeText(
-            this@CongratulationsFragment as Activity,
-            "Logout is success",
-            Toast.LENGTH_LONG
-        )
-            .show()
-        findNavController().navigate(
-            CongratulationsFragmentDirections
-                .actionCongratulationsFragmentToLoginFragment()
-        )
+        AuthUI.getInstance().signOut(requireContext())
         findNavController().popBackStack()
+        findNavController().navigate(R.id.loginFragment)
     }
 
 

@@ -1,89 +1,70 @@
 package com.example.ktx_navgraph_firebaseauth_sharedpref
 
-import android.annotation.SuppressLint
-import android.app.Activity
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.ktx_navgraph_firebaseauth_sharedpref.databinding.FragmentLoginBinding
+
 
 
 class LoginFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-
-    private val etEmail: EditText by lazy { requireActivity().findViewById(R.id.etEmail) }
-    private val etPassword: EditText by lazy { requireActivity().findViewById(R.id.etPassword) }
-    private val btnLogin: Button by lazy { requireActivity().findViewById(R.id.btnLogin) }
-    private val btnCreateAccount: Button by lazy { requireActivity().findViewById(R.id.btnCreateAccount) }
-    private val btnWithoutLogin: Button by lazy { requireActivity().findViewById(R.id.btnWithoutLogin) }
+    private val viewModel by viewModels<LoginViewModel>()
+    private var _binding: FragmentLoginBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val binding = FragmentLoginBinding.inflate(inflater, container, false)
+        this._binding = binding
+        return binding.root
     }
 
 
-    @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
+        observeAuthentificationState()
 
-        btnCreateAccount.setOnClickListener {
-            findNavController().navigate(R.layout.fragment_registration, null)
+        _binding?.btnWithoutLogin?.setOnClickListener {
+            findNavController().navigate(R.id.congratulationsFragment)
         }
 
-        btnWithoutLogin.setOnClickListener {
-            findNavController().navigate(
-                LoginFragmentDirections
-                    .actionLoginFragmentToCongratulationsFragment()
-            )
-        }
-
-        btnLogin.setOnClickListener {
-            authFireBase()
+        _binding?.btnCreateAccount?.setOnClickListener {
+            findNavController().navigate(R.id.registrationFragment)
         }
 
     }
 
-    fun authFireBase() {
-        if (etEmail.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
-            toastLogin("email or password field is empty")
-        } else {
-            Log.d("Debug", "click btnLogin -> else ->")
-            auth.signInWithEmailAndPassword(
-                etEmail.text.toString(),
-                etPassword.text.toString()
-            )
-                .addOnCompleteListener(this@LoginFragment as Activity) { task ->
-                    Log.d("Debug", "click btnLogin -> else -> task ->")
-                    if (task.isSuccessful) {
-                        toastLogin("Authentication success")
-                        val action = LoginFragmentDirections
-                            .actionLoginFragmentToCongratulationsFragment()
-                        findNavController().navigate(action)
-                    } else {
-                        toastLogin("Authentication failed")
+    private fun observeAuthentificationState() {
+        viewModel.authenticationState.observe(viewLifecycleOwner, { authenticationState ->
+            when(authenticationState){
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    _binding?.btnLogin?.setOnClickListener {
+                        findNavController().navigate(R.id.congratulationsFragment)
+                    }
+                } else -> {
+                    _binding?.btnLogin?.setOnClickListener {
+                        findNavController().navigate(R.id.loginFragment)
                     }
                 }
-        }
+            }
+        })
     }
 
-    fun toastLogin(text: String) {
-        Toast.makeText(this@LoginFragment as Activity, "$text", Toast.LENGTH_LONG).show()
-    }
 
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

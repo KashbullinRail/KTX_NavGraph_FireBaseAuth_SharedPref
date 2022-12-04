@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -31,6 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    viewBinding {
+        enabled = true
+    }
 
 }
 
@@ -54,9 +58,13 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     // FireBase_Auth
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
-
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-ui-auth-ktx:21.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    //LiveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+
 
 
     testImplementation 'junit:junit:4.13.2'

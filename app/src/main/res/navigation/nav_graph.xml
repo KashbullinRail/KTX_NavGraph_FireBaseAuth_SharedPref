@@ -9,30 +9,15 @@
         android:id="@+id/loginFragment"
         android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_congratulationsFragment"
-            app:destination="@id/congratulationsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
-        <action
-            android:id="@+id/action_registrationFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/congratulationsFragment"
         android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.CongratulationsFragment"
         android:label="fragment_congratulations"
-        tools:layout="@layout/fragment_congratulations" >
-        <action
-            android:id="@+id/action_congratulationsFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_congratulations" />
 </navigation>
