@@ -17,5 +17,6 @@
     <string name="logoutNavView">Logout</string>
     <string name="without_login">Without login</string>
     <string name="authentification_fail">Authentification FAIL</string>
+    <string name="registration_on_google">Registration on Google</string>
 
 </resources>
