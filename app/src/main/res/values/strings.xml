@@ -18,5 +18,11 @@
     <string name="without_login">Without login</string>
     <string name="authentification_fail">Authentification FAIL</string>
     <string name="registration_on_google">Registration on Google</string>
+    <string name="emailPasswordEmpty">email or password field is empty</string>
+    <string name="registration_success">Registration success</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="authentication_success">Authentication success</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="registration_google_account">Registration Google Account</string>
 
 </resources>

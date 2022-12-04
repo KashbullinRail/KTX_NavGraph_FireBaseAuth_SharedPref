@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-
+import com.google.firebase.auth.FirebaseAuth
 
 
 class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
@@ -21,6 +21,7 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
     private val navView: NavigationView by lazy { requireActivity().findViewById(R.id.navView) }
     private val drawer: DrawerLayout by lazy { requireActivity().findViewById(R.id.drawer) }
     private val wvWeb: WebView by lazy { requireActivity().findViewById(R.id.wvWeb) }
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,6 +80,7 @@ class CongratulationsFragment : Fragment(R.layout.fragment_congratulations) {
     }
 
     fun logout() {
+        auth.signOut()
         AuthUI.getInstance().signOut(requireContext())
         findNavController().popBackStack()
     }

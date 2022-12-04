@@ -23,16 +23,9 @@ import com.google.firebase.ktx.Firebase
 
 class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
-    companion object {
-        const val TAG = "LoginSuccess"
-        const val SIGN_IN_CODE = 5000
-    }
-
-    private val viewModel by viewModels<LoginViewModel>()
     private lateinit var navController: NavController
     private var _binding: FragmentRegistrationBinding? = null
     private lateinit var auth: FirebaseAuth
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,57 +37,19 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         return binding.root
     }
 
-    private fun launchSignInFlow() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .build(), SIGN_IN_CODE
-        )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SIGN_IN_CODE) {
-            val responce = IdpResponse.fromResultIntent(data)
-            if (requestCode == Activity.RESULT_OK) {
-                Log.d(
-                    TAG, "Success sign in user" +
-                            "${FirebaseAuth.getInstance().currentUser?.displayName}"
-                )
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
         auth = Firebase.auth
 
-        _binding?.btnRegistrationOnGoogle?.setOnClickListener { launchSignInFlow() }
+        fun snakbar(id: Int) {
+            Snackbar.make(view, requireActivity().getString(id),
+                Snackbar.LENGTH_LONG).show()
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navController.popBackStack(R.id.loginFragment, false)
-        }
-
-        viewModel.authenticationState.observe(viewLifecycleOwner) { authentificationState ->
-            when (authentificationState) {
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    navController.popBackStack()
-                    navController.navigate(R.id.congratulationsFragment)
-                }
-                LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> Snackbar.make(
-                    view, requireActivity().getString(R.string.authentification_fail),
-                    Snackbar.LENGTH_LONG
-                ).show()
-                else -> Log.d(TAG, "Authentification state that does not $authentificationState")
-            }
         }
 
         _binding?.btnRegistration?.setOnClickListener {
@@ -102,17 +57,17 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
             if (_binding?.etEmailReg?.text.toString()
                     .isEmpty() || _binding?.etPasswordReg?.text.toString().isEmpty()
             ) {
-
+                snakbar(R.string.emailPasswordEmpty)
             } else {
                 auth.createUserWithEmailAndPassword(
                     _binding?.etEmailReg?.text.toString(),
                     _binding?.etPasswordReg?.text.toString()
                 ).addOnCompleteListener(requireActivity()) { task ->
-
                     if (task.isSuccessful) {
+                        snakbar(R.string.registration_success)
                         findNavController().navigate(R.id.loginFragment)
                     } else {
-
+                        snakbar(R.string.registration_failed)
                     }
                 }
             }

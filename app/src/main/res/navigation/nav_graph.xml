@@ -20,4 +20,9 @@
         android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.CongratulationsFragment"
         android:label="fragment_congratulations"
         tools:layout="@layout/fragment_congratulations" />
+    <fragment
+        android:id="@+id/gmailRegistrationFragment"
+        android:name="com.example.ktx_navgraph_firebaseauth_sharedpref.GmailRegistrationFragment"
+        android:label="fragment_gmail_registration"
+        tools:layout="@layout/fragment_gmail_registration" />
 </navigation>

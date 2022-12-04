@@ -1,15 +1,10 @@
 package com.example.ktx_navgraph_firebaseauth_sharedpref
 
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.Settings.Global.putString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,14 +28,15 @@ class LoginFragment : Fragment() {
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         this._binding = binding
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        observeAuthentificationState()
+        fun snakbar(id: Int) {
+            Snackbar.make(view, requireActivity().getString(id),
+                Snackbar.LENGTH_LONG).show()
+        }
 
         _binding?.btnWithoutLogin?.setOnClickListener {
             findNavController().navigate(R.id.congratulationsFragment)
@@ -51,7 +47,6 @@ class LoginFragment : Fragment() {
         }
 
         auth = Firebase.auth
-
 
         _binding?.btnLogin?.setOnClickListener {
             if (_binding?.etEmail?.text.toString()
@@ -65,7 +60,10 @@ class LoginFragment : Fragment() {
                 )
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
+                            snakbar(R.string.authentication_success)
                             findNavController().navigate(R.id.congratulationsFragment)
+                        } else {
+                            snakbar(R.string.authentication_failed)
                         }
                     }
             }
@@ -83,7 +81,7 @@ class LoginFragment : Fragment() {
                 }
                 else -> {
                     _binding?.btnLogin?.setOnClickListener { View ->
-                        findNavController().navigate(R.id.registrationFragment)
+                        findNavController().navigate(R.id.gmailRegistrationFragment)
                     }
                 }
             }
@@ -93,11 +91,6 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    fun snakbar(id: Int, view: View) {
-        Snackbar.make(view, requireActivity().getString(id),
-            Snackbar.LENGTH_LONG).show()
     }
 
 }
