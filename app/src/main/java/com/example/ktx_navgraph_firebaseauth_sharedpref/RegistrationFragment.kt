@@ -15,7 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class RegistrationFragment : Fragment(R.layout.fragment_registration) {
+class RegistrationFragment : Fragment() {
 
     private lateinit var navController: NavController
     private var _binding: FragmentRegistrationBinding? = null
