@@ -19,15 +19,16 @@ class LoginFragment : Fragment() {
 
     private val viewModel by viewModels<LoginViewModel>()
     private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentLoginBinding.inflate(inflater, container, false)
-        this._binding = binding
-        return binding.root
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,25 +39,25 @@ class LoginFragment : Fragment() {
                 Snackbar.LENGTH_LONG).show()
         }
 
-        _binding?.btnWithoutLogin?.setOnClickListener {
+        binding.btnWithoutLogin.setOnClickListener {
             findNavController().navigate(R.id.congratulationsFragment)
         }
 
-        _binding?.btnCreateAccount?.setOnClickListener {
+        binding.btnCreateAccount.setOnClickListener {
             findNavController().navigate(R.id.registrationFragment)
         }
 
         auth = Firebase.auth
 
-        _binding?.btnLogin?.setOnClickListener {
-            if (_binding?.etEmail?.text.toString()
-                    .isEmpty() || _binding?.etPassword?.text.toString().isEmpty()
+        binding.btnLogin.setOnClickListener {
+            if (binding.etEmail.text.toString()
+                    .isEmpty() || binding.etPassword.text.toString().isEmpty()
             ) {
                observeAuthentificationState()
             } else {
                 auth.signInWithEmailAndPassword(
-                    _binding?.etEmail?.text.toString(),
-                    _binding?.etPassword?.text.toString()
+                    binding.etEmail.text.toString(),
+                    binding.etPassword.text.toString()
                 )
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
@@ -75,12 +76,12 @@ class LoginFragment : Fragment() {
         viewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
             when (authenticationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    _binding?.btnLogin?.setOnClickListener { View ->
+                    binding.btnLogin.setOnClickListener { View ->
                         findNavController().navigate(R.id.congratulationsFragment)
                     }
                 }
                 else -> {
-                    _binding?.btnLogin?.setOnClickListener { View ->
+                    binding.btnLogin.setOnClickListener { View ->
                         findNavController().navigate(R.id.gmailRegistrationFragment)
                     }
                 }
